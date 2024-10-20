@@ -16,7 +16,7 @@ const Page = ({ isPanelOpen, togglePanel }) => {
       <main className='flex-grow'>
         <UserSideMenu open={isPanelOpen} togglePanel={togglePanel} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/inicio" element={<Home />} />
           <Route path="/noticias" element={<News />} />
           <Route path="/institucion" element={<Institute />} />
           <Route path="/eventos" element={<Events />} />

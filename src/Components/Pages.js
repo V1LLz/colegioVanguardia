@@ -3,28 +3,11 @@ import React, { Component, useState } from 'react'
 import "slick-carousel/slick/slick.css";
 import Slider from "react-slick";
 import RightArrow from '../static/chevron-right.svg'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Bandera from '../static/bandera ierv.png';
 import Escudo from '../static/escudo.webp'
-
-function Card({
-    height = 'h-96',
-    title = 'titulo ejemplo', 
-    description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis rutrum metus eget lorem ultrices, et hendrerit diam bibendum. Praesent vel dui nec tellus pharetra blandit ut hendrerit sapien. Etiam sed velit a ligula tincidunt interdum. In hac habitasse platea dictumst. Aenean blandit elementum aliquam. Aenean nisi ligula, ultricies in risus quis, scelerisque laoreet enim. Fusce ac odio tellus. Phasellus non venenatis eros. ',
-    imageUrl = 'https://iervanguardia.wordpress.com/wp-content/uploads/2012/03/432147_3060517265331_1035390897_32876302_1561847463_n12.jpg?w=300',
-    url = ''}
-  ) {
-  const navigate = useNavigate();
-  return (
-    <div className={`${height} shadow-[0_3px_5px_rgb(0,0,0,0.2)] rounded-lg flex flex-col overflow-hidden hover:bg-slate-200 cursor-pointer`} onClick={()=> navigate(url)}>
-      <img className='h-2/3  w-full object-cover' src={imageUrl} alt={title} />
-      <div className='m-3 h-1/3 overflow-clip'>
-        <h4 className='text-2xl font-bold'>{title}</h4>
-        <p>{description}</p>
-      </div>
-    </div>
-  )
-}
+import Card from './Card';
+import ScrollToHashElement from "@cascadia-code/scroll-to-hash-element";
 
 
 
@@ -83,6 +66,7 @@ class CreatePost extends Component {
 
 
 class Home extends Component {
+
   NewsSection = () =>{
     const navigate = useNavigate();
     var settings = {
@@ -92,12 +76,14 @@ class Home extends Component {
       slidesToShow: 3.2,
       slidesToScroll: 1,
     };
+
     return (
-      <div className='w-9/12 mx-auto my-20'>
+      <section className='w-9/12 mx-auto my-20'>
         <div className='flex cursor-pointer hover:bg-slate-100' onClick={() => navigate('/noticias')}>
           <h3 className='text-4xl font-bold m-3'>Noticias</h3>
           <img className='mt-2' src={RightArrow} alt="" />
         </div>
+        
         <Slider {...settings}>
           <Card />
           <Card />
@@ -108,7 +94,7 @@ class Home extends Component {
           <Card />
           <Card />
         </Slider>
-      </div>
+      </section>
     );
   }
   EventsSection = () =>{
@@ -118,38 +104,80 @@ class Home extends Component {
       infinite: false,
       speed: 300,
       slidesToShow: 2.2,
-      slidesToScroll: 1,
+      slidesToScroll: 1
     };
     return (
-      <div className='w-9/12 mx-auto my-20'>
+      <section className='w-9/12 mx-auto my-20'>
         <div className='flex cursor-pointer hover:bg-slate-100' onClick={() => navigate('/eventos')}>
           <h3 className='text-4xl font-bold m-3'>Eventos</h3>
           <img className='mt-2' src={RightArrow} alt="" />
         </div>
         <Slider {...settings}>
-          <Card height='h-[50svh]' title='Evento1'/>
-          <Card height='h-[50svh]' title='Evento2'/>
-          <Card height='h-[50svh]' title='Evento3'/>
-          <Card height='h-[50svh]' title='Evento4'/>
-          <Card height='h-[50svh]' title='Evento5'/>
-          <Card height='h-[50svh]' title='Evento6'/>
-          <Card height='h-[50svh]' title='Evento7'/>
-          <Card height='h-[50svh]' title='Evento8'/>
+          <Card title='Eventos1' height='h-[60svh]'/>
+          <Card title='Eventos2' height='h-[60svh]'/>
+          <Card title='Eventos3' height='h-[60svh]'/>
+          <Card title='Eventos4' height='h-[60svh]'/>
+          <Card title='Eventos5' height='h-[60svh]'/>
+          <Card title='Eventos6' height='h-[60svh]'/>
+          <Card title='Eventos7' height='h-[60svh]'/>
+          <Card title='Eventos8' height='h-[60svh]'/>
         </Slider>
-      </div>
+      </section>
+    );
+  }
+  
+  BannerSection = () => {
+    function NextArrow(props){  // Boton Siguiente
+      const { className, style, onClick } = props;
+      return(
+        <div
+          className={className}
+          style={{ ...style, display: "block", right: 20, borderRadius: 0, opacity: 0.5}}
+          onClick={onClick}
+        />
+      );
+    }
+    function PrevArrow(props){ // Boton Previo
+      const { className, style, onClick } = props;
+      return(
+        <div
+            className={className}
+            style={{ ...style, display: "block", left: 20, borderRadius: 0, opacity: 0.5}}
+            onClick={onClick}
+          />
+      )
+    }
+
+    const navigate = useNavigate();
+    var settings = {
+      centerPadding: 'true',
+      dots: true,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      prevArrow: <PrevArrow />,
+      nextArrow: <NextArrow />
+    };
+    return (
+      <section>
+        <Slider {...settings}>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento1'/>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento2'/>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento3'/>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento4'/>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento5'/>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento6'/>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento7'/>
+          <Card type='homeBanner' imageUrl='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' title='Evento8'/>
+        </Slider>
+      </section>
     );
   }
     render() {
         return (
             <div> 
-              <div className='relative '>
-                <div className='flex flex-col gap-4 absolute bottom-[10%] left-[10%] right-[10%] text-white z-10'>
-                  <h2 className=' text-4xl font-bold'>Texto de inicio home page</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis rutrum metus eget lorem ultrices, et hendrerit diam bibendum. Praesent vel dui nec tellus pharetra blandit ut hendrerit sapien. Etiam sed velit a ligula tincidunt interdum. In hac habitasse platea dictumst. Aenean blandit elementum aliquam. Aenean nisi ligula, ultricies in risus quis, scelerisque laoreet enim. Fusce ac odio tellus. Phasellus non venenatis eros. </p>
-                </div>
-                <img src='https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/394281425_768163528655937_6337659242888956190_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6LryajVeOTwQ7kNvgGvex_u&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=ACDf2IoabeJdFg8BD6Bgbly&oh=00_AYCgsbBae63rsEhoQEvw4e3JkgdScryFaIT7sp0L0xPpOg&oe=6713530E' alt='imagen inicio' className='h-[80svh] w-full object-cover z-0'></img>
-                <div className='absolute inset-0 bg-transparent shadow-[inset_0px_-300px_100px_-100px_#2d3748] pointer-events-none'></div>
-              </div>
+              <this.BannerSection />
               <h2 className='my-10 text-center text-6xl font-bold'>CONOCE MÁS DE NOSOTROS</h2>
 
               <this.EventsSection />
@@ -165,18 +193,32 @@ class News extends Component {
   render() {
     return (
       <div className='h-full p-4' width="80%">
-        <h1 className='text-center text-3xl font-bold mb-6'>Noticias</h1>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
-          <Card title="Colombia Patria Mía" />
-          <Card title="FUNDIENDO ARMAS, CIMENTANDO PAZ" />
-          <Card title="Publicidad Engañosa En Empresas De Armas" />
-          <Card title="Noticia 4" />
-          <Card title="Noticia 5" />
-          <Card title="Noticia 6" />
-          <Card title="Noticia 7" />
-          <Card title="Noticia 8" />
-          <Card title="Noticia 9" />
-          <Card title="Noticia 10" />
+        <h1 className='text-center text-4xl font-bold mb-6'>Noticias</h1>
+        <div className='flex w-8/12 m-auto gap-8'>
+          <section className='flex flex-col gap-8  w-3/4'>
+            <Card type='news' height='h-72' title="Colombia Patria Mía" />
+            <Card type='news' height='h-72' title="FUNDIENDO ARMAS, CIMENTANDO PAZ" />
+            <Card type='news' height='h-72' title="Publicidad Engañosa En Empresas De Armas" />
+            <Card type='news' height='h-72' title="Noticia 4" />
+            <Card type='news' height='h-72' title="Noticia 5" />
+            <Card type='news' height='h-72' title="Noticia 6" />
+            <Card type='news' height='h-72' title="Noticia 7" />
+            <Card type='news' height='h-72' title="Noticia 8" />
+            <Card type='news' height='h-72' title="Noticia 9" />
+            <Card type='news' height='h-72' title="Noticia 10" />
+          </section>
+          <section className='w-1/4'>
+          <iframe 
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fpaginaierv&tabs=timeline&width=340&height=2000&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" 
+            width="340" 
+            height="2000" 
+            style={{ border: 'none', overflow: 'hidden' }} 
+            scrolling="no" 
+            frameBorder="0" 
+            allowFullScreen 
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
+          </iframe>
+          </section>
         </div>
       </div>
     );
@@ -207,7 +249,9 @@ class Articles extends Component {
 class Institute extends Component {
     content = {
       vision: 'Formar bachilleres técnicos en áreas relacionadas con la conservación, protección y manejo ambiental, desde un modelo pedagógico vanguardista, que les permita ser capaces de transformar su entorno a través de procesos de investigación, desarrollo de proyectos, competencias ciudadanas y laborales, basados en los valores y principios institucionales, con un alto sentido de liderazgo que conlleve a un cambio social, y al mejoramiento de su calidad de vida.',
+      visionImgUrl : 'https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/462142411_999114335560854_6312703776833572999_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=3RGXdNkKRVEQ7kNvgELPjUe&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=Ae7PBzLH8gnM-5OvlQDIhXC&oh=00_AYA9_qdiQrmHdeea2OWyXLeNxFdmYsqtEo9S6af7P3DYWA&oe=671A7577',
       mision: 'Para el 2022 la Institución Educativa Rural Vanguardia, será reconocida a nivel municipal y departamental por sus resultados académicos y su participación en proyectos de desarrollo rural y ambiental, fundamentado en el juicio crítico y autoconstrucción permanente, así como en los valores éticos y morales.',
+      misionImgUrl: 'https://scontent.fvvc1-1.fna.fbcdn.net/v/t39.30808-6/461995280_999114098894211_1466672941337710893_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=rg-lNWTGZmoQ7kNvgFpyXV6&_nc_zt=23&_nc_ht=scontent.fvvc1-1.fna&_nc_gid=AzWZB0lveALwtKHEKgBxoi7&oh=00_AYAqiV1_jea9_5jlHr3hUOjX7I2bbOekwn45GhVhNVU3zQ&oe=671A5889',
       banderUrl: {Bandera},
       banderaDescripcion: 'El color azul de nuestro cielo, significa lealtad, justicia, buena reputación y la nobleza.  El color blanco significa la paz, pureza, el triunfo, la alegría, la inocencia y la inmortalidad.  El color verde de nuestro inmenso llano, representa la naturaleza, es esperanza, conciencia ecológica, honor, civismo y vigor.',
       escudoUrl: {Escudo},
@@ -278,28 +322,30 @@ Autor: Jairo Humberto Rojas Bonilla, 2005
     }
     render() {
       return (
-        <div className='w-9/12 mx-auto divide-y'>
-          <section className='flex justify-between gap-10 p-10'>
-            <div className='w-1/2 text-left place-content-center'>
+        <div className='w-9/12 mx-auto divide-y '>
+          <ScrollToHashElement/>
+          <section id='sedes' className='px-10 my-10'>
+            <iframe 
+              className='w-full h-[720px] mx-auto'
+              src="https://www.google.com/maps/d/embed?mid=1pGJWRS3ruEtdrK0GorgkjKtUIn4&hl=en&ehbc=2E312F" ></iframe>
+          </section>
+          <section id='mision' className='flex justify-between gap-10 py-20 px-0 lg:px-10 flex-col  lg:flex-row'>
+            <div className='lg:w-1/2 text-left place-content-center'>
               <h3 className='font-bold text-4xl mb-5'>Misión</h3>
               <p>{this.content.mision}</p>
             </div>
-            <div className='w-1/2 my-auto'>
-              <img className='w-full max-h-80 object-cover' src="https://iervanguardia.wordpress.com/wp-content/uploads/2012/03/432147_3060517265331_1035390897_32876302_1561847463_n12.jpg?w=300" alt="" />
-            </div>
+            <img className='lg:w-1/2 my-auto max-h-96 object-cover' src={this.content.misionImgUrl} alt="" />
           </section>
 
-          <section className='flex justify-between gap-10 p-10'>
-            <div className='w-1/2 my-auto'>
-              <img className='w-full max-h-80 object-cover' src="https://iervanguardia.wordpress.com/wp-content/uploads/2012/03/432147_3060517265331_1035390897_32876302_1561847463_n12.jpg?w=300" alt="" />
-            </div>
-            <div className='w-1/2  text-right place-content-center'>
+          <section id='vision' className='flex justify-between gap-10 py-20 lg:px-10 flex-col-reverse  lg:flex-row'>
+            <img className=' max-h-96 object-cover lg:w-1/2 my-auto' src={this.content.visionImgUrl}  alt="" />
+            <div className='lg:w-1/2  lg:text-right place-content-center'>
               <h3 className='font-bold text-4xl mb-5'>Visión</h3>
               <p>{this.content.vision}</p>
             </div>
           </section>
 
-          <section className='mx-auto text-center pt-10 my-10 flex flex-col gap-20'>
+          <section className='mx-auto text-center py-20 px-10 mt-20 flex flex-col gap-20'>
             <div>
               <h2 className='font-bold text-6xl my-5'>Nuestros simbolos institucionales</h2>
               <p className='text-xl'>Los símbolos de la Institución Educativa Rural Vanguardia fueron creados para afianzar la identidad de la comunidad estudiantil, y el reconocimiento de la sociedad llanera, fueron adoptados mediante resolución interna, con la aprobación del consejo directivo.</p>
@@ -310,25 +356,22 @@ Autor: Jairo Humberto Rojas Bonilla, 2005
               <p className='font-light text-4xl '> “CON PASO FIRME HACIA LA EXCELENCIA PERSONAL”</p>
             </div>
 
-            <div className='flex gap-10 divide-x-2'>
-              <div className='w-1/3 gap-120 flex flex-col'>
-                <h3 className='font-bold text-3xl '>Himno</h3>
+            <div className='flex flex-col xl:flex-row gap-10 xl:divide-x-2'>
+              <div className='xl:w-1/3 flex flex-col gap-5'>
+                <h3 className='font-bold text-3xl'>Himno</h3>
                 <pre className='font-serif'>{this.content.himno}</pre>
               </div >
-              <div className='flex flex-col w-2/3 gap-20 px-10'>
+              <div className='flex flex-col xl:w-2/3 gap-20 px-10'>
                 <div className='items-center gap-5 flex flex-col'>
-                  <h3 className='font-bold text-3xl '>Bandera</h3>
+                  <h3 className='font-bold text-3xl'>Bandera</h3>
                   <img src={Bandera} alt="Bandera de la institucion" className='h-64 w-fit'/>
-                  <p className='font-serif'>{this.content.banderaDescripcion}</p>
+                  <p className='font-serif lg:px-10'>{this.content.banderaDescripcion}</p>
                 </div>
-                <div className='items-center gap-5 flex flex-col'>
-                  <h3 className='font-bold text-3xl '>Escudo</h3>
+                <div className='items-center gap-5 flex flex-col lg:px-10'>
+                  <h3 className='font-bold text-3xl'>Escudo</h3>
                   <img src={Escudo} alt="Escudo de la institucion" className='h-64 w-fit' />
                   <p className='font-serif'>{this.content.escudoDescripcion}</p>
                 </div>
-                <div></div>
-                <div></div>
-                <div></div>
               </div>
             </div>
             
